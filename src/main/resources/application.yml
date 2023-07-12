@@ -11,8 +11,7 @@ spring:
       url: jdbc:mysql://datatransport.c7hdso3luiog.ap-east-1.rds.amazonaws.com:3306/data_transport
       username: root
       password: root1234
-      type: com.alibaba.druid.pool.DruidDataSource
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       druid:
         min-idle: 5
         max-active: 20
