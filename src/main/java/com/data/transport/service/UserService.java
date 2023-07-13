@@ -10,4 +10,5 @@ public interface UserService {
     String login(AuthLoginRequest req);
     int resetPassword(ResetPasswordRequest req);
     int forgetPassword(ForgetPwdRequest req);
+    User getUserById(int id);
 }

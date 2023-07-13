@@ -1,7 +1,9 @@
 package com.data.transport.service.impl;
 
 import com.data.transport.common.constant.ResponseCode;
+import com.data.transport.common.constant.UserRoleEnum;
 import com.data.transport.common.exception.BusinessException;
+import com.data.transport.common.util.IdGenerator;
 import com.data.transport.common.util.JwtUtil;
 import com.data.transport.domain.User;
 import com.data.transport.mapper.UserMapper;
@@ -22,7 +24,7 @@ import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Resource
+    @Autowired
     private UserMapper userMapper;
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Override
@@ -34,7 +36,16 @@ public class UserServiceImpl implements UserService {
         User newUser = new User();
         String userPassword = req.getPassword();
         String salt= UUID.randomUUID().toString().toUpperCase();
+        String uid = IdGenerator.nextUid();
         newUser.setSalt(salt);
+        newUser.setUid(uid);
+        newUser.setUsername(req.getUserName());
+        newUser.setRole(UserRoleEnum.USER.getName());
+        newUser.setIsDelete(0);
+        newUser.setModifiedTime(new Date());
+        newUser.setCreatedTime(new Date());
+        newUser.setCreatedBy(uid);
+        newUser.setModifiedBy(uid);
         String md5Password = getMd5Password(userPassword, salt);
         logger.debug("Slat Password : {}",md5Password);
         newUser.setPassword(md5Password);
@@ -102,6 +113,15 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(ResponseCode.UPDATE_PASSWORD_FAILED);
         }
         return result;
+    }
+
+    @Override
+    public User getUserById(int id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        if (ObjectUtils.isEmpty(user)){
+            throw new BusinessException(ResponseCode.INVALID_USER);
+        }
+        return user;
     }
 
 

@@ -1,93 +1,159 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.data.transport.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.data.transport.model.domain.User">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uid" jdbcType="VARCHAR" property="uid" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="CHAR" property="password" />
-    <result column="role" jdbcType="CHAR" property="role" />
-    <result column="salt" jdbcType="CHAR" property="salt" />
-    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-    <result column="created_by" jdbcType="VARCHAR" property="createdBy" />
-    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
-    <result column="modified_by" jdbcType="VARCHAR" property="modifiedBy" />
-    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.data.transport.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.data.transport.domain.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="CHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="CHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="modified_by" property="modifiedBy" jdbcType="VARCHAR" />
+    <result column="modified_time" property="modifiedTime" jdbcType="TIMESTAMP" />
   </resultMap>
-
-  <sql id="Base_Column_List">
-    id, uid, username, password, role, salt, is_delete, created_by, created_time, modified_by,
+  <sql id="Base_Column_List" >
+    id, uid, username, password, role, salt, is_delete, created_by, created_time, modified_by, 
     modified_time
   </sql>
-
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.data.transport.model.domain.User">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insert" parameterType="com.data.transport.domain.User" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_user (uid, username, password, role,
-      salt, is_delete, created_by, 
-      created_time, modified_by, modified_time
-      )
-    values (#{uid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=CHAR}, #{role,jdbcType=CHAR},
-      #{salt,jdbcType=CHAR}, #{isDelete,jdbcType=INTEGER}, #{createdBy,jdbcType=VARCHAR},
-      #{createdTime,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, #{modifiedTime,jdbcType=TIMESTAMP}
-      )
+    insert into t_user (uid, username, password, 
+      role, salt, is_delete, 
+      created_by, created_time, modified_by, 
+      modified_time)
+    values (#{uid,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=CHAR}, 
+      #{role,jdbcType=VARCHAR}, #{salt,jdbcType=CHAR}, #{isDelete,jdbcType=INTEGER}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createdTime,jdbcType=TIMESTAMP}, #{modifiedBy,jdbcType=VARCHAR}, 
+      #{modifiedTime,jdbcType=TIMESTAMP})
   </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.data.transport.model.domain.User">
+  <insert id="insertSelective" parameterType="com.data.transport.domain.User" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="salt != null" >
+        salt,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="createdBy != null" >
+        created_by,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="modifiedBy != null" >
+        modified_by,
+      </if>
+      <if test="modifiedTime != null" >
+        modified_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=CHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null" >
+        #{salt,jdbcType=CHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedBy != null" >
+        #{modifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedTime != null" >
+        #{modifiedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.data.transport.domain.User" >
     update t_user
-    <set>
-      <if test="uid != null">
+    <set >
+      <if test="uid != null" >
         uid = #{uid,jdbcType=VARCHAR},
       </if>
-      <if test="username != null">
+      <if test="username != null" >
         username = #{username,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
+      <if test="password != null" >
         password = #{password,jdbcType=CHAR},
       </if>
-      <if test="role != null">
-        role = #{role,jdbcType=CHAR},
+      <if test="role != null" >
+        role = #{role,jdbcType=VARCHAR},
       </if>
-      <if test="salt != null">
+      <if test="salt != null" >
         salt = #{salt,jdbcType=CHAR},
       </if>
-      <if test="isDelete != null">
+      <if test="isDelete != null" >
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
-      <if test="createdBy != null">
+      <if test="createdBy != null" >
         created_by = #{createdBy,jdbcType=VARCHAR},
       </if>
-      <if test="createdTime != null">
+      <if test="createdTime != null" >
         created_time = #{createdTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="modifiedBy != null">
+      <if test="modifiedBy != null" >
         modified_by = #{modifiedBy,jdbcType=VARCHAR},
       </if>
-      <if test="modifiedTime != null">
+      <if test="modifiedTime != null" >
         modified_time = #{modifiedTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.data.transport.model.domain.User">
+  <update id="updateByPrimaryKey" parameterType="com.data.transport.domain.User" >
     update t_user
     set uid = #{uid,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=CHAR},
+      role = #{role,jdbcType=VARCHAR},
       salt = #{salt,jdbcType=CHAR},
-      role = #{role,jdbcType=CHAR},
       is_delete = #{isDelete,jdbcType=INTEGER},
       created_by = #{createdBy,jdbcType=VARCHAR},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
@@ -109,5 +175,6 @@
     from t_user
     where uid = #{uid,jdbcType=INTEGER}
   </select>
+
 
 </mapper>
